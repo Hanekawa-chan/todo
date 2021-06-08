@@ -7,16 +7,16 @@ import (
 )
 
 type toDo struct {
-	id int64
-	title string
+	id          int64
+	title       string
 	description string
-	check bool
+	check       bool
 }
 type Db struct {
 	toDos []toDo
 }
 
-func (db *Db) findById(id int64) (toDo, error){
+func (db *Db) findById(id int64) (toDo, error) {
 	var item toDo
 	for _, element := range db.toDos {
 		if element.id == id {
@@ -24,21 +24,21 @@ func (db *Db) findById(id int64) (toDo, error){
 		}
 	}
 	if item.id == 0 {
-		return toDo{} , status.Errorf(codes.NotFound, "can't find todo with this id")
+		return toDo{}, status.Errorf(codes.NotFound, "can't find todo with this id")
 	} else {
-		return item , nil
+		return item, nil
 	}
 }
 
-func (db *Db) findAll() ([]toDo, error){
+func (db *Db) findAll() ([]toDo, error) {
 	var item []toDo
 	for _, element := range db.toDos {
 		item = append(item, element)
 	}
 	if len(item) == 0 {
-		return []toDo{} , status.Errorf(codes.NotFound, "can't find todos")
+		return []toDo{}, status.Errorf(codes.NotFound, "can't find todos")
 	} else {
-		return item , nil
+		return item, nil
 	}
 }
 
@@ -53,7 +53,7 @@ func removeById(s []toDo, i int64) []toDo {
 	return s[:len(s)-1]
 }
 
-func (db *Db) save(r *v1.CreateRequest) int64{
+func (db *Db) save(r *v1.CreateRequest) int64 {
 	var id int64
 	if len(db.toDos) > 0 {
 		id = db.toDos[0].id
@@ -70,7 +70,7 @@ func (db *Db) save(r *v1.CreateRequest) int64{
 	return id
 }
 
-func (db *Db) count(id int64) int64{
+func (db *Db) count(id int64) int64 {
 	var i int64 = 0
 	for _, element := range db.toDos {
 		if element.id == id {
@@ -80,7 +80,7 @@ func (db *Db) count(id int64) int64{
 	return i
 }
 
-func (db *Db) update(r *v1.UpdateRequest) (int64, error){
+func (db *Db) update(r *v1.UpdateRequest) (int64, error) {
 	i := db.count(r.ToDo.Id)
 	if i == 0 {
 		return 0, status.Errorf(codes.Unknown, "updated nothing")
@@ -95,15 +95,15 @@ func (db *Db) update(r *v1.UpdateRequest) (int64, error){
 	}
 }
 
-func (db *Db) check(r *v1.CheckRequest) (int64, error){
+func (db *Db) check(r *v1.CheckRequest) (int64, error) {
 	i := db.count(r.Id)
-	var id int
+	var id int64 = -1
 	for index, element := range db.toDos {
 		if element.id == r.Id {
-			id = index
+			id = int64(index)
 		}
 	}
-	if id == 0 {
+	if id == -1 {
 		return 0, status.Errorf(codes.Unknown, "updated nothing")
 	} else {
 		t := db.toDos[id]
@@ -113,7 +113,7 @@ func (db *Db) check(r *v1.CheckRequest) (int64, error){
 	}
 }
 
-func (db *Db) delete(r *v1.DeleteRequest) (int64, error){
+func (db *Db) delete(r *v1.DeleteRequest) (int64, error) {
 	i := db.count(r.Id)
 	if i == 0 {
 		return 0, status.Errorf(codes.Unknown, "deleted nothing")
