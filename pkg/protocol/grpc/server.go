@@ -11,8 +11,8 @@ import (
 	"google.golang.org/grpc"
 )
 
-func RunServer(ctx context.Context, v1API v1.ToDoServiceServer, port string) error {
-	listen, err := net.Listen("tcp", ":"+port)
+func RunServer(ctx context.Context, v1API v1.ToDoServiceServer) error {
+	listen, err := net.Listen("tcp", ":9090")
 	if err != nil {
 		return err
 	}

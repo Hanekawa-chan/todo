@@ -17,10 +17,10 @@ const (
 )
 
 func main() {
-	address := flag.String("server", "", "gRPC server in format host:port")
+	address := "localhost:9090"
 	flag.Parse()
 
-	conn, err := grpc.Dial(*address, grpc.WithInsecure())
+	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
@@ -35,13 +35,13 @@ func main() {
 	var title string
 	var description string
 	var i int64
-	if len(os.Args) > 2 {
-		request = os.Args[2]
+	if len(os.Args) > 1 {
+		request = os.Args[1]
 		switch request {
 		case "create":
 			{
-				title = os.Args[3]
-				description = os.Args[4]
+				title = os.Args[2]
+				description = os.Args[3]
 				req1 := v1.CreateRequest{
 					Api: apiVersion,
 					ToDo: &v1.ToDo{
@@ -57,7 +57,7 @@ func main() {
 			}
 		case "read":
 			{
-				i, err = strconv.ParseInt(os.Args[3], 10, 64)
+				i, err = strconv.ParseInt(os.Args[2], 10, 64)
 				if err != nil {
 					panic(err)
 				}
@@ -73,7 +73,7 @@ func main() {
 			}
 		case "delete":
 			{
-				i, err = strconv.ParseInt(os.Args[3], 10, 64)
+				i, err = strconv.ParseInt(os.Args[2], 10, 64)
 				if err != nil {
 					panic(err)
 				}
@@ -90,12 +90,12 @@ func main() {
 			}
 		case "update":
 			{
-				i, err = strconv.ParseInt(os.Args[3], 10, 64)
+				i, err = strconv.ParseInt(os.Args[2], 10, 64)
 				if err != nil {
 					panic(err)
 				}
-				title = os.Args[4]
-				description = os.Args[5]
+				title = os.Args[3]
+				description = os.Args[4]
 				req3 := v1.UpdateRequest{
 					Api: apiVersion,
 					ToDo: &v1.ToDo{
@@ -123,7 +123,7 @@ func main() {
 			}
 		case "check":
 			{
-				i, err = strconv.ParseInt(os.Args[3], 10, 64)
+				i, err = strconv.ParseInt(os.Args[2], 10, 64)
 				if err != nil {
 					panic(err)
 				}
@@ -138,10 +138,10 @@ func main() {
 				log.Printf("Update result: <%+v>\n\n", res6)
 			}
 		default:
-			log.Printf("please specify something" + os.Args[1] + " " + os.Args[2] + " " + os.Args[3])
+			log.Printf("please specify type of request, they can be 'create', 'read', 'update', 'delete', 'readAll', 'check'")
 		}
 	} else {
-		log.Printf("please specify type of request: they can be 'create', 'read', 'update', 'delete', 'readAll', 'check'")
+		log.Printf("please specify type of request, they can be 'create', 'read', 'update', 'delete', 'readAll', 'check'")
 	}
 
 }
