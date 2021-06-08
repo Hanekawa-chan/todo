@@ -8,16 +8,13 @@ import (
 	v1 "github.com/Hanekawa-chan/todo/pkg/service/v1"
 )
 
-
 type Config struct {
 	GRPCPort string
 }
 
-// RunServer runs gRPC server and HTTP gateway
 func RunServer() error {
 	ctx := context.Background()
 
-	// get configuration
 	var cfg Config
 	flag.StringVar(&cfg.GRPCPort, "grpc-port", "", "gRPC port to bind")
 	flag.Parse()

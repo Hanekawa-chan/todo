@@ -20,7 +20,6 @@ func NewToDoServiceServer(db *Db) v1.ToDoServiceServer {
 }
 
 func (s *toDoServiceServer) checkAPI(api string) error {
-	// API version is "" means use current version of the service
 	if len(api) > 0 {
 		if apiVersion != api {
 			return status.Errorf(codes.Unimplemented,
@@ -30,7 +29,7 @@ func (s *toDoServiceServer) checkAPI(api string) error {
 	return nil
 }
 
-func (s *toDoServiceServer) Create(ctx context.Context,req *v1.CreateRequest) (*v1.CreateResponse, error) {
+func (s *toDoServiceServer) Create(ctx context.Context, req *v1.CreateRequest) (*v1.CreateResponse, error) {
 	if err := s.checkAPI(req.Api); err != nil {
 		return nil, err
 	}
@@ -43,7 +42,7 @@ func (s *toDoServiceServer) Create(ctx context.Context,req *v1.CreateRequest) (*
 	}, nil
 }
 
-func (s *toDoServiceServer) Read(ctx context.Context,req *v1.ReadRequest) (*v1.ReadResponse, error) {
+func (s *toDoServiceServer) Read(ctx context.Context, req *v1.ReadRequest) (*v1.ReadResponse, error) {
 	if err := s.checkAPI(req.Api); err != nil {
 		return nil, err
 	}
@@ -53,10 +52,10 @@ func (s *toDoServiceServer) Read(ctx context.Context,req *v1.ReadRequest) (*v1.R
 	}
 
 	td := v1.ToDo{
-		Id: toDo.id,
-		Title: toDo.title,
+		Id:          toDo.id,
+		Title:       toDo.title,
 		Description: toDo.description,
-		Check: toDo.check,
+		Check:       toDo.check,
 	}
 
 	return &v1.ReadResponse{
@@ -66,7 +65,7 @@ func (s *toDoServiceServer) Read(ctx context.Context,req *v1.ReadRequest) (*v1.R
 
 }
 
-func (s *toDoServiceServer) Update(ctx context.Context,req *v1.UpdateRequest) (*v1.UpdateResponse, error) {
+func (s *toDoServiceServer) Update(ctx context.Context, req *v1.UpdateRequest) (*v1.UpdateResponse, error) {
 	if err := s.checkAPI(req.Api); err != nil {
 		return nil, err
 	}
@@ -85,7 +84,7 @@ func (s *toDoServiceServer) Update(ctx context.Context,req *v1.UpdateRequest) (*
 	}, nil
 }
 
-func (s *toDoServiceServer) Delete(ctx context.Context,req *v1.DeleteRequest) (*v1.DeleteResponse, error) {
+func (s *toDoServiceServer) Delete(ctx context.Context, req *v1.DeleteRequest) (*v1.DeleteResponse, error) {
 	if err := s.checkAPI(req.Api); err != nil {
 		return nil, err
 	}
@@ -104,7 +103,7 @@ func (s *toDoServiceServer) Delete(ctx context.Context,req *v1.DeleteRequest) (*
 	}
 }
 
-func (s *toDoServiceServer) Check(ctx context.Context,req *v1.CheckRequest) (*v1.CheckResponse, error) {
+func (s *toDoServiceServer) Check(ctx context.Context, req *v1.CheckRequest) (*v1.CheckResponse, error) {
 	if err := s.checkAPI(req.Api); err != nil {
 		return nil, err
 	}
@@ -123,7 +122,7 @@ func (s *toDoServiceServer) Check(ctx context.Context,req *v1.CheckRequest) (*v1
 	}
 }
 
-func (s *toDoServiceServer) ReadAll(ctx context.Context,req *v1.ReadAllRequest) (*v1.ReadAllResponse, error) {
+func (s *toDoServiceServer) ReadAll(ctx context.Context, req *v1.ReadAllRequest) (*v1.ReadAllResponse, error) {
 	if err := s.checkAPI(req.Api); err != nil {
 		return nil, err
 	}
@@ -135,10 +134,10 @@ func (s *toDoServiceServer) ReadAll(ctx context.Context,req *v1.ReadAllRequest) 
 		var lis []*v1.ToDo
 		for _, element := range list {
 			lis = append(lis, &v1.ToDo{
-				Id: element.id,
-				Title: element.title,
+				Id:          element.id,
+				Title:       element.title,
 				Description: element.description,
-				Check: element.check,
+				Check:       element.check,
 			})
 		}
 		return &v1.ReadAllResponse{
