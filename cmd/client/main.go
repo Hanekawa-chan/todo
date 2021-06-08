@@ -101,7 +101,7 @@ func main() {
 					ToDo: &v1.ToDo{
 						Id:          i,
 						Title:       title,
-						Description: description + " + updated",
+						Description: description,
 					},
 				}
 				res3, err := c.Update(ctx, &req3)
